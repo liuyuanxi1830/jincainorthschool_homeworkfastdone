@@ -13,7 +13,8 @@
 然后就可以直接使用啦！
 ## **感谢名单**
 作者：lyx    
-也感谢以下几位同学（排名不分先后）：美若天仙的石绪源，cxm，zxy，sxy（女），dhc，zcx，lsm还有闪闪发亮的亮瑜<img width="165" height="76" alt="Screenshot 2026-04-04 180342" src="https://github.com/user-attachments/assets/44ade007-8e2f-4217-a313-7e3edcedd59d" />（鼓掌👏👏👏）  
+也感谢以下几位同学（排名不分先后）：美若天仙的石绪源，cxm，zxy，sxy（女），dhc，zcx，lsm还有闪闪发亮的亮瑜  
+<img width="165" height="76" alt="Screenshot 2026-04-04 180342" src="https://github.com/user-attachments/assets/44ade007-8e2f-4217-a313-7e3edcedd59d" />（鼓掌👏👏👏）  
 $${\color{darkorange}当然沈皓阳是必须要感谢的，他耐心听我讲这个意义不明的东西（我自己都听不下去）没有他说不定就没有这个程序}$$  
 $${\color{palegreen}最后我单方面宣布我接受了上海市进才中学北校及本程序所涉及的铃铛教育的感谢（抽象😂😂😂）}$$
 ## **声明**
