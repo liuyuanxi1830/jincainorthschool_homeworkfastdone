@@ -1,24 +1,52 @@
 # jincainorthschool_homeworkfastdone
-## **引言**
-所有上海市进才中学北校及铃铛教育的受害者们想象一下（仅供娱乐）：  
-在一个美好的周五，终于要放学了，窗外阳光正好，还有风，既不冷也不热，鸟不停地叫，让人迫不及待。（意义不明的描写，作者文笔不好）骑自行车，走路回家的同学已经想好一会儿管他多远，直接飞回去，那么坐公交，地铁的同学只能安耐住激动，看着司机不紧不慢的开，无能为力。太好了，回家后家长不在，直接把冰箱里那个pizza，juice，ice-cream 全部吃光。再拿出那个手机。。。  
-正想到开心时，抬头一看，不是哥们，不是黑板吗，那这个写满作业的白板是啥？太好了，语数英各有1吨的卷子，我们有救啦！！！没事至少还有作 * 帮，回去问同学要个会员 。  
-卷子写完后打开官网一看，英语：1mol道朗读题。写完后，还好天还是亮的，一看时间，为什么是周六。不是老师，我拿真心对你，你拿 * 浇我啊！  
-那我问你，周末是用来写卷子的吗？look in my eyes 嗯？
-所以就有了这个项目，快速完成作业优势在我
 ## **项目简介**
 这是一个基于python request库做的爬虫程序，所有使用铃铛教育的学校学生均可以用这个项目快速，自动，高效，快捷，智能地完成学校作业。这个项目也使用了豆包，deepseek等的api可以使用ai模型完成作业，也支持自动生成录音完成阅读作业。
-## **食用方法（名字是抽象）**
+## **使用方法**
 先pip这些东西：pip install urllib3 pygame pyttsx3 notifypy pillow requests cairosvg tkinter
 然后就可以直接使用啦！
 ## **感谢名单**
 作者：lyx    
-也感谢以下几位同学（排名不分先后）：美若天仙的石绪源，cxm，zxy，sxy（女），dhc，zcx，lsm还有闪闪发亮的亮瑜  
-<img width="165" height="76" alt="Screenshot 2026-04-04 180342" src="https://github.com/user-attachments/assets/44ade007-8e2f-4217-a313-7e3edcedd59d" />（鼓掌👏👏👏）  
+也感谢以下几位同学（排名不分先后）：
+<table>
+ <tbody>
+   <tr>
+     <td align="center" valign="top" width="20%">
+       <a href="https://github.com/octocat">
+         <img src="https://github.com/user-attachments/assets/2ef5fa34-aa9b-47a7-8d9d-45d039f67483" width="100px;" alt="忘了名字的朱"/>
+         <br /><sub><b>忘了名字的朱</b></sub>
+       </a>
+     </td>
+     <td align="center" valign="top" width="20%">
+       <a href="https://github.com/defunkt">
+         <img src="https://github.com/user-attachments/assets/01a53a84-08b1-404e-9ad6-57d21f1c429e" width="100px;" alt="1835-sxy"/>
+         <br /><sub><b>1835-sxy</b></sub>
+       </a>
+     </td>
+     <td align="center" valign="top" width="20%">
+       <a href="https://github.com/pjhyett">
+         <img src="https://github.com/user-attachments/assets/e7ce248a-86c9-4434-af0e-76f8c8847dd9" width="100px;" alt="墨"/>
+         <br /><sub><b>墨</b></sub>
+       </a>
+     </td>
+     <td align="center" valign="top" width="20%">
+       <a href="https://github.com/schacon">
+         <img src="https://github.com/user-attachments/assets/579da335-6a68-45b4-8c63-bd0359940aa6" width="100px;" alt="lyx"/>
+         <br /><sub><b>lyx</b></sub>
+       </a>
+     </td>
+     <td align="center" valign="top" width="20%">
+       <a href="https://github.com/schacon">
+         <img src="https://github.com/user-attachments/assets/344c8413-b812-49e8-9553-a379ed9d3087" width="100px;" alt="胖胖"/>
+         <br /><sub><b>胖胖</b></sub>
+       </a>
+     </td>
+   </tr>
+ </tbody>
+</table>
+
 $${\color{darkorange}当然沈皓阳是必须要感谢的，他耐心听我讲这个意义不明的东西（我自己都听不下去）没有他说不定就没有这个程序}$$  
 $${\color{palegreen}最后我单方面宣布我接受了上海市进才中学北校及本程序所涉及的铃铛教育的感谢（抽象😂😂😂）}$$
 ## **声明**
-每发布这种爬虫都要加一句，所有操作都在靶机内完成，仅供娱乐，无任何实际攻击行为，已获得网站授权。然后审核/观众看到：哇！原来是娱乐的，表示认同
-## **补充**
-这里还没想好写啥，就说一句头像那个人不是我，我没这么糖。  
+仅供娱乐，仅供教学
+
 $${\color{cyan}快给star}$$
