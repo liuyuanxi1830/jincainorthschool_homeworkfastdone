@@ -284,6 +284,10 @@ def fetch_zuoye_detail(session, zuoye_id, user_zuoye_id):
         q_list = data.get("data", {}).get("zuoyeQestionList", [])
         if not q_list:
             q_list = data.get("data", {}).get("zuoyeQuestions", [])
+        # 先保存原始题目列表
+        global raw_q_list
+        raw_q_list= q_list
+
         questions = []
         for q in q_list:
             questions.append(extract_question_info(q))
@@ -505,10 +509,83 @@ def format_fill_blank_answer(user_input):
 
 
 
+def print_original_english_word(raw_question_list):
+    """从原始题目对象提取 name 字段英文单词并打印"""
+    print("\n===== 提取英文单词 =====")
+    for item in raw_question_list:
+        word = item.get("name", "").strip()
+        if word:
+            print(word)
+
+def show_english_words(questions):
+    print("\n===== 提取英文单词 =====")
+    for q in questions:
+        word = q.get("name", "").strip()
+        if word:
+            print(word)
 
 
 
 
+
+
+
+def submit_raw_word_answer(session, user_zuoye_id, zuoye_qest_id, word_text):
+    """直接提交原英文单词作为答案，不翻译"""
+    try:
+        data = {
+            "userZuoyeId": user_zuoye_id,
+            "zuoyeQestId": zuoye_qest_id,
+            "answer": word_text
+        }
+        resp = session.post(
+            SAVE_ANSWER_URL,
+            data=data,
+            headers=HEADERS,
+            timeout=20,
+            verify=False
+        )
+        result = extract_json_from_response(resp.text)
+        if result and result.get("code") == 0:
+            return {"success": True, "msg": "单词提交成功"}
+        else:
+            err_msg = result.get("msg", "接口异常") if result else "解析失败"
+            return {"success": False, "msg": err_msg}
+    except Exception as e:
+        return {"success": False, "msg": f"请求异常：{str(e)}"}
+
+
+def batch_submit_raw_word(session, user_zuoye_id, raw_question_list):
+    """批量提取原题英文单词 → 直接原样提交"""
+    print(f"\n{YELLOW}===== 开始批量提交原英文单词 ====={END}")
+    submit_count = 0
+    skip_count = 0
+
+    for idx, item in enumerate(raw_question_list, 1):
+        qid = item.get("id") or item.get("zuoyeQestId", "")
+        # 提取原题name里的单词
+        raw_title = item.get("name", "").strip()
+        # 清理掉html、只留纯文本单词
+        word_only = clean_text(raw_title)
+        # 过滤掉中文，只保留英文
+        word_only = re.sub(r'[\u4e00-\u9fa5]', '', word_only).strip()
+
+        if not qid or not word_only:
+            print(f"{YELLOW}第{idx}题：无ID或无有效英文单词，跳过{END}")
+            skip_count += 1
+            continue
+
+        print(f"{YELLOW}第{idx}题 单词：{word_only}{END}")
+        res = submit_raw_word_answer(session, user_zuoye_id, qid, word_only)
+        if res["success"]:
+            print(f"  {GREEN}✅ 提交成功{END}")
+            submit_count += 1
+        else:
+            
+            skip_count += 1
+        print(f"{BLUE}{'-' * 60}{END}")
+
+    print(f"\n{GREEN}批量提交完成：成功 {submit_count} 题 | 跳过 {skip_count} 题{END}")
 
 def batch_submit_answers(session, user_zuoye_id, questions):
     """
@@ -517,7 +594,15 @@ def batch_submit_answers(session, user_zuoye_id, questions):
     2. 音频题自动提取题目文本作为朗读内容
     """
     print(f"\n{YELLOW} 开始批量提交答案 | 共 {len(questions)} 道题目{END}")
-    # 第一步：一次性确认整个作业是否为音频作业
+    
+
+    is_show_words = input(f"{YELLOW}是否提取英文单词？(y=是/回车=否)：{END}").strip().lower()
+    if is_show_words == "y":
+        #show_english_words(questions)
+        if input(f"{YELLOW}是否直接提交原英文单词？(y/n): ").strip().lower() == "y":
+                batch_submit_raw_word(session, user_zuoye_id, raw_q_list)
+        return
+
     is_audio_homework = input(f"{YELLOW}该作业是否为音频作业？(y=是/回车=否)：{END}").strip().lower()
     if is_audio_homework == "q":
         print(f"{PURPLE}退出提交流程{END}")
@@ -536,16 +621,13 @@ def batch_submit_answers(session, user_zuoye_id, questions):
 
         print(f"{YELLOW}【待提交】第{idx}题【{q['type']}】：{q['title'][:60]}...{END}")
         
-        # 音频作业：自动提取题目文本生成音频并提交
         if is_audio_homework == "y":
-            # 提取题目文本（清理图片标记）
             read_text = re.sub(r'![^!]+!', '', q["title"]).strip()
             if not read_text:
                 print(f"{RED}  题目无有效文本，跳过{END}")
                 skip_count += 1
                 continue
             
-            # 生成音频并提交
             try:
                 audio_path = text_to_speech_audio(read_text)
                 res = submit_audio_answer(session, user_zuoye_id, q["qid"], audio_path)
@@ -554,22 +636,12 @@ def batch_submit_answers(session, user_zuoye_id, questions):
                     submit_count += 1
                     audio_submit_count += 1
                 else:
-                    #print(f"  ❌ 音频提交失败：{res['msg']}")
-                    #他是可以提交的，但是会报错
-                    #大神帮忙优化音频删除逻辑，会提示被占用
-                    #这里偷个懒(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)
                     skip_count += 1
             except Exception as e:
-                #print(f"  ❌ 音频生成失败：{str(e)}")
-                #他是可以提交的，但是会报错
-                #大神帮忙优化音频删除逻辑，会提示被占用
-                #这里偷个懒(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)(*^▽^*)
                 skip_count += 1
             print(f"{BLUE}{'-' * 60}{END}")
             continue
 
-        # 非音频作业：原有文本答案逻辑
-        # 填空题
         if q["type"] == "fill_blank":
             print(f"  {YELLOW}填空题，请直接输入答案{END}")
             ans = input(f"  {GREEN}第{idx}题答案：{END}").strip()
@@ -585,10 +657,9 @@ def batch_submit_answers(session, user_zuoye_id, questions):
                 print(f"  {GREEN} 提交成功{END}")
                 submit_count += 1
             else:
-                print(f"  {RED} 失败：{res['msg']}{END}")
+                print(f"{RED} 失败：{res['msg']}{END}")
                 skip_count += 1
 
-        # 选择题
         else:
             if not q["options"]:
                 print("  无选项，跳过")
@@ -614,13 +685,11 @@ def batch_submit_answers(session, user_zuoye_id, questions):
                     print(f"  {RED} 失败：{res['msg']}{END}")
                     skip_count += 1
             except:
-                print(f"  {RED} 输入无效，跳过{END}")
+                print(f"{RED} 输入无效，跳过{END}")
                 skip_count += 1
         print(f"{BLUE}{'-' * 60}{END}")
 
     print(f"\n {GREEN}提交完成：成功 {submit_count} 题（其中音频 {audio_submit_count} 题）| 跳过 {skip_count} 题{END}")
-
-
 
 
 
