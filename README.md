@@ -1,6 +1,9 @@
 # jincainorthschool_homeworkfastdone
 ## **项目简介**
 这是一个基于python request库做的爬虫程序，所有使用铃铛教育的学校学生均可以用这个项目快速，自动，高效，快捷，智能地完成学校作业。这个项目也使用了豆包，deepseek等的api可以使用ai模型完成作业，也支持自动生成录音完成阅读作业。
+## **使用方法**  
+使用范围：朗读题，翻译题，填空题，选择题  
+敬请期待：ai背单词
 ## **使用方法**
 先pip这些东西：pip install urllib3 pygame pyttsx3 notifypy pillow requests cairosvg tkinter
 然后就可以直接使用啦！
